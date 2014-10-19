@@ -29,6 +29,14 @@ class CreateLiferaft implements Action {
 		'writeStubLiferaftFile',
 		'addLiferaftFileToGit',
 	];
+	
+  /**
+   * The error count.
+   *
+   * @var integer
+   */	
+    
+  protected $errorCount = 0;    
 
 	/**
 	 * Create a new action instance.
@@ -157,6 +165,13 @@ class CreateLiferaft implements Action {
 		}
 		catch (\Exception $e)
 		{
+		  if ($this->errorCount > 5)
+		  {
+		     throw $e;
+		  }
+		  
+		  $this->errorCount++;
+		  
 			sleep(3);
 
 			$this->renameRepository($username, $repository, $name);
